@@ -1,50 +1,32 @@
-// ChecklistGoal class inheriting from Goal
 public class ChecklistGoal : Goal
 {
-    public int TargetCount { get; set; }
-    public int CurrentCount { get; set; }
-    public int BonusPoints { get; set; }
+    private int _amountCompleted; // Count of how many times the goal has been completed
+    private int _target; // Target count to complete the goal
+    private int _bonus; // Bonus points for completing the goal
 
-    public ChecklistGoal(string name, string description, int points, int targetCount, int bonusPoints) 
+    public ChecklistGoal(string name, string description, int points, int target, int bonus, int amountCompleted = 0)
         : base(name, description, points)
     {
-        TargetCount = targetCount;
-        CurrentCount = 0;
-        BonusPoints = bonusPoints;
+        _target = target;
+        _bonus = bonus;
+        _amountCompleted = amountCompleted;
     }
 
-    // Record progress towards the checklist goal
+    // Increment the count of completed steps
     public override void RecordEvent()
     {
-        if (CurrentCount < TargetCount)
-        {
-            CurrentCount++;
-            if (CurrentCount == TargetCount)
-            {
-                Console.WriteLine($"[Success] Goal '{_shortName}' completed! You earned {_points} points and a bonus of {BonusPoints} points!");
-            }
-            else
-            {
-                Console.WriteLine($"[Progress] Goal '{_shortName}' recorded! You earned {_points} points! Completed {CurrentCount}/{TargetCount} times.");
-            }
-        }
+        _amountCompleted++;
     }
 
-    // Check if the target count is reached
-    public override bool IsComplete()
-    {
-        return CurrentCount >= TargetCount;
-    }
+    // Check if the goal is complete
+    public override bool IsComplete() => _amountCompleted >= _target;
 
-    // Get the goal details as a string
-    public override string GetDetailsString()
-    {
-        return $"{_shortName} - {_description} ({_points} points) - {CurrentCount}/{TargetCount} completed";
-    }
+    // Return details of the goal
+    public override string GetDetailsString() => $"[Checklist Goal] {GetName()}: {GetDescription()} - Points: {GetPoints()} - Completed: {_amountCompleted}/{_target}";
 
-    // Get the string representation of the goal for saving
-    public override string GetStringRepresentation()
-    {
-        return $"ChecklistGoal|{_shortName}|{_description}|{_points}|{CurrentCount}|{TargetCount}|{BonusPoints}";
-    }
+    // Return a string representation for saving to a file
+    public override string GetStringRepresentation() => $"ChecklistGoal|{GetName()}|{GetDescription()}|{GetPoints()}|{_amountCompleted}|{_target}|{_bonus}";
+
+    // Getter for bonus points
+    public int GetBonus() => _bonus;
 }

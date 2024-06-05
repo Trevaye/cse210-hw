@@ -1,25 +1,24 @@
-using System;
-
-// Base class
 public abstract class Goal
 {
-    public string _shortName;
-    public string _description;
-    public int _points;
+    private string _name; // Goal name
+    private string _description; // Goal description
+    private int _points; // Points awarded for the goal
 
-    public Goal(string name, string description, int points )
+    protected Goal(string name, string description, int points)
     {
-        _shortName = name;
+        _name = name;
         _description = description;
         _points = points;
     }
 
-    //Method to record
+    // Abstract methods to be implemented by derived classes
     public abstract void RecordEvent();
-    // Method to check if goal is complete
     public abstract bool IsComplete();
-    //Methoud to get the foal details as a string
     public abstract string GetDetailsString();
-    //Method to get the string representation for the goal for saving
     public abstract string GetStringRepresentation();
+
+    // Getter methods for goal properties
+    public string GetName() => _name;
+    public string GetDescription() => _description;
+    public int GetPoints() => _points;
 }
